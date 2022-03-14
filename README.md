@@ -1,1 +1,1 @@
-# CSE-4th-Semester-Labs
+# CSE 4th Semester Labs
