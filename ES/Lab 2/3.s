@@ -1,0 +1,27 @@
+	AREA RESET,  DATA, READONLY
+	EXPORT __Vectors
+__Vectors
+		DCD 0X10001000
+		DCD Reset_Handler
+		ALIGN
+		AREA mycode, CODE, READONLY 
+		ENTRY
+		EXPORT Reset_Handler
+Reset_Handler
+	LDR R0,=SRC
+	LDR R2,=DST
+	MOV R5, #0
+	MOV R6, #0
+	LDR R4, [R0],#4
+	LDR R5, [R0]
+	SUBS R4, R4, R5
+	ADC R6, R6, #-1
+	STR R4, [R2], #4
+	STR R6, [R2]
+STOP
+	B STOP
+	
+SRC DCD 0X0FFF0FFF, 0X0FFF000F
+	AREA mydata, DATA, READWRITE
+DST DCD 0
+	END
