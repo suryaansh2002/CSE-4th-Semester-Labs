@@ -1,0 +1,176 @@
+    
+1.
+create table EMPLOYEE(
+emp_no number(10) PRIMARY KEY,
+emp_name varchar(20) NOT NULL,
+gender varchar(1) NOT NULL,
+salary number(10) NOT NULL,
+address varchar(20) NOT NULL);
+
+
+alter table EMPLOYEE add check(gender in ('M','F'));
+
+
+2.
+create table DEPARTMENT(
+dept_no number(10) PRIMARY KEY,
+dept_name varchar(20) NOT NULL UNIQUE,
+location varchar(20));
+
+
+3. 
+alter table EMPLOYEE add(dept_no number(10));
+ alter table EMPLOYEE add constraint fk FOREIGN KEY(dept_no) references DEPARTMENT(dept_no);
+4.
+insert into DEPARTMENT(dept_no,dept_name,location) values(101,'Accounting','B1');
+insert into DEPARTMENT(dept_no,dept_name,location) values(102,'Sales','B2');
+insert into DEPARTMENT(dept_no,dept_name,location) values(103,'HR','B3');
+
+
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10001,'Sam','M',100000,'Mumbai',101);
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10002,'Roy','F',205000,'Mumbai',102);
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10003,'Sid','F',107000,'Mumbai',102);
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10004,'John','M',120900,'Mumbai',103);
+
+
+
+5. 
+
+
+insert into DEPARTMENT(dept_no,dept_name,location) values(101,'Accounting','B4');
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10005,'Jim','S',50000,'Delhi',102);
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,dept_no) values(10003,'Raj','M',100000,'Manipal',112);
+
+
+6. 
+DELETE FROM DEPARTMENT WHERE dept_no=102;
+
+
+7.
+alter table EMPLOYEE drop constraint fk;
+ alter table EMPLOYEE add constraint fk FOREIGN KEY(dept_no) references DEPARTMENT(dept_no) on delete cascade;
+
+
+
+8. 
+alter table EMPLOYEE modify(salary default 10000);
+insert into EMPLOYEE(emp_no,emp_name,gender,address) values(10001,'Sam','M','Mumbai');
+
+
+9.
+select name, dept_name from student;
+
+
+10.
+select name, dept_name from instructor where dept_name='Comp. Sci.';
+
+
+11. 
+select title,credits from course where dept_name='Comp. Sci.' and credits=3;
+
+
+12. 
+Select title,course_id from course natural join takes where ID=12345;
+
+
+13.
+Select name from instructor where salary between 40000 and 90000;
+
+
+14.
+Select instructor.id from instructor where id not in (select distinct teaches.id from teaches);
+
+
+15.
+Select name, title, takes.year FROM student, section, course, takes WHERE room_number=303 and course.course_id = section.course_id 
+and course.course_id = takes.course_id and takes.id = student.id and takes.year = section.year and takes.sec_id = section.sec_id and 
+section.semester = takes.semester;
+
+
+16. 
+select name, course_id as c_name from student natural join takes where takes.year=2015;
+
+
+17. 
+select distinct a.name, a.salary as inst_salary from instructor a, instructor b where b.dept_name='Comp. Sci.' and a.salary>b.salary;
+
+
+18.
+Select name from instructor where dept_name like '%ch%';
+
+
+
+19.
+Select name,LENGTH(name) from student;
+
+
+20.
+select dept_name,substr(dept_name,3,3) from department;
+
+
+21.
+select UPPER(name) from instructor;
+
+
+22. 
+Select NVL(grade,'F') from takes;
+
+
+23.
+Select salary,ROUND(salary/3,-2) from instructor;
+
+
+24.
+ALTER table employee add birthdate DATE
+
+
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,birthdate) values(10001,'Sam','M',100000,'Mumbai',to_date ('12021998', 'DDMMYYYY'));
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,birthdate) values(10002,'Roy','F',205000,'Mumbai',to_date ('15031995', 'DDMMYYYY'));
+insert into EMPLOYEE(emp_no,emp_name,gender,salary,address,birthdate) values(10003,'Sid','F',107000,'Mumbai',to_date ('12061999', 'DDMMYYYY'));
+
+
+SELECT to_char(birthdate,'DD-MON-YYYY') from employee;
+SELECT to_char(birthdate,'DD-MON-YY') from employee;
+SELECT to_char(birthdate,'DD-MM-YYYY') from employee;
+
+
+25
+SELECT to_char(birthdate,'YEAR') from employee;
+SELECT to_char(birthdate,'Year') from employee;
+SELECT to_char(birthdate,'year') from employee;
+
+
+26
+SELECT to_char(birthdate,'DAY') from employee;
+SELECT to_char(birthdate,'Day') from employee;
+
+
+27.
+SELECT to_char(birthdate,'MONTH') from employee;
+SELECT to_char(birthdate,'month') from employee;
+
+
+28.
+SELECT LAST_DAY(birthdate) from employee;
+SELECT to_char(LAST_DAY(birthdate),'Day') from employee;
+
+
+29.
+SELECT ROUND(MONTHS_BETWEEN (sysdate, birthdate)/12,0) as age from employee;
+
+
+30
+ SELECT NEXT_DAY(add_months(birthdate, 720), 'saturday') from employee;
+
+
+31
+SELECT * from employee where to_char(birthdate,'YYYY')=1999;
+
+
+32.
+SELECT * from employee where to_char(birthdate,'YYYY') between 1995 and 1998;
+
+
+33.
+ SELECT * from employee where to_char(add_months(birthdate, 720), 'YYYY') = &X;
+ 
