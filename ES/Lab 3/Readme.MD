@@ -8,4 +8,4 @@
 
 4.Write an ARM assembly language program to convert 2-digit hexadecimal number into ascii format.
 
-5.Writean ARM assembly languageprogramto convert a 32 bit BCDnumber in the unpacked form into packed form.
+5.Writean ARM assembly language program to convert a 32 bit BCD number in the unpacked form into packed form.
