@@ -1,0 +1,97 @@
+1
+select title, count(distinct takes.ID) Number_Of_Students
+from student,takes,course where student.ID=takes.ID and takes.course_id=course.course_id 
+ group by title;
+
+2.
+select dept_name,count(ID) as total_students from student group by dept_name having count(ID) > 10;
+
+3. 
+select dept_name,count(course_id) from course group by dept_name;
+
+4.
+
+select dept_name,avg(salary) from instructor group by dept_name having avg(salary)>42000;
+
+
+5.
+select sec_id,count(ID) as Enrollments from takes where semester='Spring' and year=2009 group by sec_id;
+
+6.
+select * from prereq order by course_id asc;
+
+7.
+select * from instructor order by salary desc;
+
+8.
+select max(total_salary) from (select dept_name, sum(salary) as total_salary from instructor group by dept_name);
+
+9.
+select dept_name, avg_salary 
+from(select dept_name,avg(salary) as avg_salary 
+from instructor group by dept_name) 
+where avg_salary>42000;
+
+10.
+select sec_id, enroll from
+(select sec_id,count(ID) as enroll from takes where semester='Spring' and year=2010
+ group by sec_id)
+ where enroll >=all
+(select count(ID) as enroll from takes where semester='Spring' and year=2010 group by sec_id);
+
+11. 
+select name from instructor natural join teaches
+ where course_id in 
+(select distinct course_id from 
+student natural join takes where dept_name='Comp. Sci.');
+
+12.
+select dept_name,count(*) as total,avg(salary) as average_salary from instructor 
+group by dept_name having count(ID)>5 and avg(salary)>50000;
+
+13.
+with bud(value) as (select max(budget) from department)
+select dept_name,budget from department,bud where bud.value=department.budget;
+
+14.
+with 
+tot(dept_name,total) as (select dept_name,sum(salary) as tot from instructor group by dept_name), 
+av(val) as (select avg(total) from tot) 
+select dept_name, total from tot, av where total>val;
+
+15. 
+with totl(sec_id, cnt) as (select sec_id, count(distinct ID) from takes where semester='Fall' and year=2009 group by sec_id),
+ mx(val) as (select max(cnt) from totl) select sec_id, cnt from totl, mx where cnt=val;
+
+16.
+with t1(dept_name,total_cred) as (select dept_name,sum(tot_cred) from student group by dept_name),
+   t2(value) as (select total_cred from t1 where dept_name='Finance')
+    select dept_name from t1,t2
+    where total_cred>value;
+
+17
+savepoint Q17;
+delete from instructor where dept_name = 'Finance';
+
+18.
+savepoint Q18;
+delete from course where dept_name='Comp. Sci.';
+
+19.
+update student set dept_name=’IT' where dept_name='Comp. Sci.';
+
+20.
+update instructor 
+set salary=case
+	when salary>100000
+	then salary*1.03
+	else
+	salary*1.05
+    end;
+
+21
+insert into student (select id, name,dept_name,0 from instructor);
+
+22.
+create view av(value) as (select avg(salary) from instructor); 
+delete from instructor where id in (select id from instructor,av where salary<value);
