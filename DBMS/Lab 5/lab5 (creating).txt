@@ -1,0 +1,102 @@
+
+create table employeeER(
+    fname varchar(20),
+    minit varchar(1),
+    lname varchar(20),
+    bdate varchar(20),
+    address varchar(50),
+    ssn number(20),
+    sex char(1),
+    supervisor number(20),
+    salary number(10),
+    dept_no number(20),
+    primary key(ssn)
+);
+--
+insert into employeeER values('John','B','Smith','14-01-2002','London',190905520,'M',190900000,100000,11111111);
+insert into employeeER values('John','B','Sick','14-01-2002','London',190911224,'M',190900000,100000,22222222);
+insert into employeeER values('Jack','B','Smith','14-01-2002','Houston',190911066,'M',190900000,100000,22222222);
+insert into employeeER values('John','A','Smith','14-01-2002','Houston',200905288,'M',190900000,100000,11111111);
+insert into employeeER values('John','B','Smith','14-01-2002','London',199905288,'M',190900000,100000,33333333);
+insert into employeeER values('jacob','B','Smith','14-01-2002','London',200905200,'M',190900000,100000,11111111);
+insert into employeeER values('jacob','B','Smith','14-01-2002','London',190900000,'M',null,100000,11111111);
+
+alter table employeeER add foreign key (supervisor) references employeeER(ssn);
+
+create table departmentER(
+    name varchar(20),
+    dept_no number(20),
+    emp_count number(10),
+    manager number(20),
+    start_date varchar(20),
+    primary key(dept_no),
+    foreign key(manager) references employeeER(ssn)
+);
+
+insert into departmentER values('Web Development',11111111,5,190905520,'02-06-2021');
+insert into departmentER values('Research',22222222,4,190911224,'02-04-2021');
+insert into departmentER values('Machine Learning',33333333,3,190911066,'24-03-2021');
+--
+alter table employeeER add foreign key (dept_no) references departmentER(dept_no);
+--
+
+create table locationsER(
+    dept_no number(20),
+    area varchar(20),
+    primary key (dept_no, area),
+    foreign key (dept_no) references departmentER(dept_no)
+);
+--
+insert into locationsER values(11111111, 'Stanford');
+insert into locationsER values(11111111, 'London');
+insert into locationsER values(22222222, 'Houston');
+insert into locationsER values(22222222, 'India');
+insert into locationsER values(33333333, 'USA');
+insert into locationsER values(33333333, 'Canada');
+--
+
+create table dependentsER(
+    ssn number(20),
+    name varchar(20),
+    sex char(1),
+    bdate varchar(20),
+    relationship varchar(20),
+    primary key (ssn, name),
+    foreign key (ssn) references employeeER(ssn)
+);
+--
+insert into dependentsER values(190905520,'John','F','28-03-1976','Mother');
+insert into dependentsER values(190905520,'Harshita','F','18-09-2002','Sister');
+--
+
+
+create table projectsER(
+    dept_no number(20),
+    location varchar(20),
+    name varchar(20),
+    project_code number(20),
+    primary key(project_code),
+    foreign key(dept_no) references departmentER(dept_no)
+);
+insert into projectsER values(11111111, 'Houston', 'DBS', 1);
+insert into projectsER values(22222222, 'London', 'DAA',2);
+insert into projectsER values(22222222, 'London', 'OOP', 3);
+insert into projectsER values(11111111, 'London', 'FLAT', 4);
+
+create table worksER(
+    ssn number(20),
+    project_code number(20),
+    hours number(10),
+    primary key(ssn, project_code),
+    foreign key(ssn) references employeeER(ssn),
+    foreign key(project_code) references projectsER(project_code)
+);
+
+insert into worksER values(190905520, 1, 12);
+insert into worksER values(190905520,2, 30);
+insert into worksER values(200905288,2, 24);
+insert into worksER values(200905200,3, 56);
+insert into worksER values(199905288, 3, 105);
+insert into worksER values(199905288, 1, 30);
+
+
