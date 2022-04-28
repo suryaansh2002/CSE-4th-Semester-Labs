@@ -1,0 +1,41 @@
+create table author(
+	aid number(4) PRIMARY KEY,
+	name varchar(20),
+	country varchar(20));
+ 
+insert into author values(1000,'Nanda','INDIA');
+insert into author values(2000,'Gopal','USA');
+insert into author values(3000,'Bala','USA');
+insert into author values(4000,'Guru','INDIA');
+insert into author values(5000,'Swamy','INDIA');
+
+create table book(
+	bid number(2),
+	aid number(4),
+	title varchar(20),
+	chapters number(1),
+	PRIMARY KEY(bid,aid));
+
+alter table book add constraint fk FOREIGN KEY(aid) references author(aid);
+
+insert into book values(10,1000,'Java',5);
+
+insert into book values(40,2000,'C++',3);
+
+insert into book values(30,2000,'RDBMS',5);
+
+insert into book values(30,3000,'RDBMS',2);
+
+insert into book values(10,4000,'Java',4);
+
+insert into book values(40,4000,'C++',3);
+
+select distinct name 
+from author,book 
+where author.aid=book.aid and book.chapters=5;
+
+with totalchp(a_id,total_chps) as 
+(select aid, sum(chapters) from book group by aid)
+select name from author where aid in(
+select a_id from totalchp where total_chps in (
+select max(total_chps) from totalchp));
