@@ -34,7 +34,7 @@ select name from instructor where salary > some(select salary from instructor wh
 select name from instructor where salary > all(select salary from instructor where dept_name='Biology');
 
 11.
-select dept_name from (select dept_name,avg(salary) as avg_salary from instructor group by dept_name) 
+select `dept_name` from (select dept_name,avg(salary) as avg_salary from instructor group by dept_name) 
 where avg_salary >= all(select avg_salary from 
 (select dept_name,avg(salary) avg_salary from instructor group by dept_name));
 
