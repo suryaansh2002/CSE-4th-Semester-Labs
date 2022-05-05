@@ -70,7 +70,7 @@ int main()
     LPC_GPIO1->FIODIR |= 15 << 23;
     while (1)
     {
-        delayMS();
+        delayMS(1);
         dig_count += 1;
         if (dig_count == 0x05)
         {
